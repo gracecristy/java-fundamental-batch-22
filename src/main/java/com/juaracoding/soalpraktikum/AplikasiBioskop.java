@@ -7,10 +7,12 @@ public class AplikasiBioskop {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        //ArrayList untuk menyimpan daftar film
         ArrayList<String> daftarFilm = new ArrayList<>();
         daftarFilm.add("Avengers Infinity War");
         daftarFilm.add("Jumbo");
 
+        //fungsi Login, jika berhasil tampilkan menu utama
         boolean loginBerhasil = login(scanner);
         if (loginBerhasil) {
             tampilkanMenu(scanner, daftarFilm);
@@ -18,6 +20,7 @@ public class AplikasiBioskop {
         scanner.close();
     }
 
+    //Method Login
     private static boolean login(Scanner scanner) {
         String username = "admin";
         String password = "12345";
@@ -50,8 +53,10 @@ public class AplikasiBioskop {
         return isActive;
     }
 
+    //Method untuk Menu Utama
     private static void tampilkanMenu(Scanner scanner, ArrayList<String> daftarFilm) {
         boolean jalan = true;
+        //looping untuk menu tampil terus sampai memilih keluar
         while (jalan) {
             System.out.println("\n=== Menu Utama ===");
             System.out.println("1. Tampilkan Daftar Film");
@@ -62,6 +67,7 @@ public class AplikasiBioskop {
 
             String pilihanInput = scanner.nextLine();
 
+            //struktur switch case untuk menu utama
             switch (pilihanInput) {
                 case "1":
                     tampilkanFilm(daftarFilm);
@@ -88,6 +94,7 @@ public class AplikasiBioskop {
         }
     }
 
+    //Method menampilkan daftar film
     private static void tampilkanFilm(ArrayList<String> daftarFilm) {
         System.out.println("\n=== Daftar Film ===");
         if (daftarFilm.isEmpty()) {
@@ -99,6 +106,7 @@ public class AplikasiBioskop {
         }
     }
 
+    //Method menambahkan film baru
     private static void inputDataFilm(Scanner scanner, ArrayList<String> daftarFilm) {
         System.out.println("=== Input Film ===");
         System.out.print("Masukkan jumlah film (maksimal 10 film) : ");
@@ -125,6 +133,7 @@ public class AplikasiBioskop {
         System.out.println("Total film yang berhasil ditambahkan : " + jumlahFilm);
     }
 
+    //Method mencari data film berdasarkan judul
     private static void cariFilm(Scanner scanner, ArrayList<String> daftarFilm) {
         System.out.println("\n=== Cari Film ===");
         System.out.print("Masukkan judul film yang dicari: ");
@@ -144,6 +153,7 @@ public class AplikasiBioskop {
         }
     }
 
+    //Method pause layar sebelum kembali ke menu utama
     private static void pauseReturnToMenu(Scanner scanner) {
         System.out.println("\nTekan Enter untuk kembali ke menu utama.");
         scanner.nextLine();
