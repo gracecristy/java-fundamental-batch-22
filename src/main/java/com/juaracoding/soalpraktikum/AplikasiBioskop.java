@@ -1,26 +1,28 @@
 package com.juaracoding.soalpraktikum;
 
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class AplikasiBioskop {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        //ArrayList untuk menyimpan daftar film
-        ArrayList<String> daftarFilm = new ArrayList<>();
-        daftarFilm.add("Avengers Infinity War");
-        daftarFilm.add("Jumbo");
+        // Array untuk menyimpan daftar film
+        String[] daftarFilm = new String[10];
+        int jumlahFilm = 0;
 
-        //fungsi Login, jika berhasil tampilkan menu utama
+        // Inisialisasi film awal
+        daftarFilm[jumlahFilm++] = "Avengers Infinity War";
+        daftarFilm[jumlahFilm++] = "Jumbo";
+
+        // Fungsi Login, jika berhasil tampilkan menu utama
         boolean loginBerhasil = login(scanner);
         if (loginBerhasil) {
-            tampilkanMenu(scanner, daftarFilm);
+            tampilkanMenu(scanner, daftarFilm, jumlahFilm);
         }
         scanner.close();
     }
 
-    //Method Login
+    // Method Login
     private static boolean login(Scanner scanner) {
         String username = "admin";
         String password = "12345";
@@ -53,10 +55,9 @@ public class AplikasiBioskop {
         return isActive;
     }
 
-    //Method untuk Menu Utama
-    private static void tampilkanMenu(Scanner scanner, ArrayList<String> daftarFilm) {
+    // Method untuk Menu Utama
+    private static void tampilkanMenu(Scanner scanner, String[] daftarFilm, int jumlahFilm) {
         boolean jalan = true;
-        //looping untuk menu tampil terus sampai memilih keluar
         while (jalan) {
             System.out.println("\n=== Menu Utama ===");
             System.out.println("1. Tampilkan Daftar Film");
@@ -67,18 +68,17 @@ public class AplikasiBioskop {
 
             String pilihanInput = scanner.nextLine();
 
-            //struktur switch case untuk menu utama
             switch (pilihanInput) {
                 case "1":
-                    tampilkanFilm(daftarFilm);
+                    tampilkanFilm(daftarFilm, jumlahFilm);
                     pauseReturnToMenu(scanner);
                     break;
                 case "2":
-                    inputDataFilm(scanner, daftarFilm);
+                    jumlahFilm = inputDataFilm(scanner, daftarFilm, jumlahFilm);
                     pauseReturnToMenu(scanner);
                     break;
                 case "3":
-                    cariFilm(scanner, daftarFilm);
+                    cariFilm(scanner, daftarFilm, jumlahFilm);
                     pauseReturnToMenu(scanner);
                     break;
                 case "4":
@@ -90,60 +90,62 @@ public class AplikasiBioskop {
                     pauseReturnToMenu(scanner);
             }
             System.out.println();
-
         }
     }
 
-    //Method menampilkan daftar film
-    private static void tampilkanFilm(ArrayList<String> daftarFilm) {
+    // Method menampilkan daftar film
+    private static void tampilkanFilm(String[] daftarFilm, int jumlahFilm) {
         System.out.println("\n=== Daftar Film ===");
-        if (daftarFilm.isEmpty()) {
+        if (jumlahFilm == 0) {
             System.out.println("Belum ada film yang tersedia.");
         } else {
-            for (int i = 0; i < daftarFilm.size(); i++) {
-                System.out.printf("%d. %s%n", i + 1, daftarFilm.get(i));
+            for (int i = 0; i < jumlahFilm; i++) {
+                System.out.printf("%d. %s%n", i + 1, daftarFilm[i]);
             }
         }
     }
 
-    //Method menambahkan film baru
-    private static void inputDataFilm(Scanner scanner, ArrayList<String> daftarFilm) {
+    // Method menambahkan film baru
+    private static int inputDataFilm(Scanner scanner, String[] daftarFilm, int jumlahFilm) {
         System.out.println("=== Input Film ===");
         System.out.print("Masukkan jumlah film (maksimal 10 film) : ");
 
-        int jumlahFilm = scanner.nextInt();
+        int jumlahInput = scanner.nextInt();
         scanner.nextLine();
 
-        if (jumlahFilm < 1 || jumlahFilm > 10) {
+        if (jumlahInput < 1 || jumlahInput > 10) {
             System.out.println("Jumlah film harus di antara 1-10");
-            return;
+            return jumlahFilm;
         }
-        if ((daftarFilm.size() + jumlahFilm) > 10) {
-            System.out.println("Maaf, tidak bisa menambahkan " + jumlahFilm + " film.");
-            System.out.println("Sisa kapasitas: " + (10 - daftarFilm.size()) + " film");
-            return;
+        if ((jumlahFilm + jumlahInput) > 10) {
+            System.out.println("Maaf, tidak bisa menambahkan " + jumlahInput + " film.");
+            System.out.println("Sisa kapasitas: " + (10 - jumlahFilm) + " film");
+            return jumlahFilm;
         }
         System.out.println("Masukkan judul-judul film : ");
-        for (int i = 0; i < jumlahFilm; i++) {
-            System.out.printf("Film ke-%d: ", i + 1);
+        for (int i = 0; i < jumlahInput; i++) {
+            System.out.printf("Film ke-%d: ", (jumlahFilm + 1));
             String judulBaru = scanner.nextLine();
-            daftarFilm.add(judulBaru);
+            daftarFilm[jumlahFilm] = judulBaru;
+            jumlahFilm++;
             System.out.println("Film \"" + judulBaru + "\" berhasil ditambahkan");
         }
-        System.out.println("Total film yang berhasil ditambahkan : " + jumlahFilm);
+        System.out.println("Total film yang berhasil ditambahkan : " + jumlahInput);
+
+        return jumlahFilm;
     }
 
-    //Method mencari data film berdasarkan judul
-    private static void cariFilm(Scanner scanner, ArrayList<String> daftarFilm) {
+    // Method mencari data film berdasarkan judul
+    private static void cariFilm(Scanner scanner, String[] daftarFilm, int jumlahFilm) {
         System.out.println("\n=== Cari Film ===");
         System.out.print("Masukkan judul film yang dicari: ");
         String judulDicari = scanner.nextLine();
         boolean ditemukan = false;
 
         System.out.println("\nHasil pencarian:");
-        for (String film : daftarFilm) {
-            if (film.equalsIgnoreCase(judulDicari)) {
-                System.out.println("- " + film);
+        for (int i = 0; i < jumlahFilm; i++) {
+            if (daftarFilm[i].equalsIgnoreCase(judulDicari)) {
+                System.out.println("- " + daftarFilm[i]);
                 ditemukan = true;
             }
         }
@@ -153,10 +155,10 @@ public class AplikasiBioskop {
         }
     }
 
-    //Method pause layar sebelum kembali ke menu utama
+    // Method pause layar sebelum kembali ke menu utama
     private static void pauseReturnToMenu(Scanner scanner) {
         System.out.println("\nTekan Enter untuk kembali ke menu utama.");
         scanner.nextLine();
     }
-
 }
+
